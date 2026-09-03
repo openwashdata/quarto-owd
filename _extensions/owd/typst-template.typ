@@ -124,8 +124,13 @@
     }
   }
 
+  // Tables: bold header cells; a soft grey line under every body row. The
+  // rule under the header row comes from Quarto and keeps the text colour.
+  show table.cell.where(y: 0): set text(weight: "bold")
+  set table(stroke: (x, y) => if y == 0 { none } else { (bottom: 0.4pt + luma(200)) })
+
   let has-title-block = title != none or (authors != none and authors != ()) or date != none or abstract != none
-  if has-title-block {
+  let front-matter = if has-title-block {
     let logo-path = if logo == none {
       none
     } else if logo.starts-with("/") or logo.starts-with("http") {
@@ -164,7 +169,7 @@
         text(fill: luma(70))[#date]
       }
     ]
-    let front-matter = [
+    [
       #block(width: 100%, below: 2em)[
         #if logo-path != none {
           grid(
@@ -186,29 +191,30 @@
         ]
       }
     ]
-    if cover {
-      // The front matter gets a page of its own without footer; the body
-      // starts on the next page and its page numbers begin at 1.
-      page(footer: none, front-matter)
-      counter(page).update(1)
-    } else {
-      front-matter
-    }
+  } else {
+    none
   }
 
-  if toc {
-    let title = if toc_title == none {
-      auto
-    } else {
-      toc_title
-    }
+  let toc-block = if toc {
     block(above: 0em, below: 2em)[
-    #outline(
-      title: toc_title,
-      depth: toc_depth,
-      indent: toc_indent
-    );
+      #outline(
+        title: toc_title,
+        depth: toc_depth,
+        indent: toc_indent
+      )
     ]
+  } else {
+    none
+  }
+
+  if cover and front-matter != none {
+    // Cover page without footer: front matter and, when asked for, the
+    // table of contents. The body starts on the next page as page 1.
+    page(footer: none)[#front-matter #toc-block]
+    counter(page).update(1)
+  } else {
+    front-matter
+    toc-block
   }
 
   doc
