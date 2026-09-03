@@ -156,6 +156,7 @@ default document on A4. It discards any edits made in Word.
 
 ## License
 
-MIT for the extension code (see `LICENSE`). The brand assets in `_brand/`
-belong to openwashdata; their license is tracked in
-[openwashdata/brand#2](https://github.com/openwashdata/brand/issues/2).
+MIT for the extension code (see `LICENSE`). The brand definition in
+`_brand/` comes from [openwashdata/brand](https://github.com/openwashdata/brand)
+under CC BY 4.0; the logos are openwashdata's marks and are included so
+that openwashdata material renders with them.
