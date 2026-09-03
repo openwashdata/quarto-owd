@@ -95,7 +95,6 @@ $if(toc-indent)$
 $endif$
   toc_depth: $toc-depth$,
   primary: brand-color.at("primary", default: black),
-  code-fill: brand-color-background.at("primary", default: luma(230)),
   logo: brand-logo.at("medium", default: (:)).at("path", default: none),
 $if(logo-width)$
   logo-width: $logo-width$,

@@ -82,5 +82,5 @@ water. The share is highest in Nima, where piped supply is intermittent.
 ## Session information
 
 Rendered with Quarto and the `owd-typst` format of the openwashdata
-extension. Fonts: Atkinson Hyperlegible for text and Source Code Pro
-for code, both downloaded by Quarto from Google Fonts at render time.
+extension. Fonts: Atkinson Hyperlegible Next for text and Source Code
+Pro for code, both downloaded by Quarto from Google Fonts at render time.

@@ -19,7 +19,14 @@ if (!file.exists(brand_path)) stop(brand_path, " missing. Run: quarto use brand 
 
 # Brand values ----------------------------------------------------------------
 brand <- brand.yml::read_brand_yml(brand_path)
-color <- function(name) hex_clean(brand.yml::brand_color_pluck(brand, name))
+# Roles resolve through the package; palette names carry underscores there
+# (owd-purple becomes owd_purple), so try the palette first.
+color <- function(name) {
+  if (grepl("^#", name)) return(hex_clean(name))
+  pal <- brand$color$palette[[gsub("-", "_", name)]]
+  if (!is.null(pal)) return(hex_clean(pal))
+  hex_clean(brand.yml::brand_color_pluck(brand, name))
+}
 typography <- brand$typography
 base_font <- typography$base$family %||% stop("brand has no typography.base.family")
 heading_font <- typography$headings$family %||% base_font
@@ -32,12 +39,20 @@ margin_twips <- 1134  # 20 mm
 
 primary <- color("primary")
 ink <- color("foreground")
-link_color <- if (is.null(typography$link$color)) color("info") else hex_clean(typography$link$color)
+link_color <- if (is.null(typography$link$color)) color("info") else color(typography$link$color)
 table_head_fill <- mix_with_white(primary, share = 0.85)
-code_fill <- "F2F2F2"
+# Code backgrounds follow the brand's monospace roles when set, else a light
+# grey. The package spells the roles monospace_block and background_color.
+role_background <- function(role) {
+  node <- typography[[role]] %||% typography[[gsub("_", "-", role)]]
+  value <- node[["background_color"]] %||% node[["background-color"]]
+  if (is.null(value)) NULL else color(value)
+}
+code_block_fill <- role_background("monospace_block") %||% "F2F2F2"
+code_inline_fill <- role_background("monospace_inline")
 
 message("Brand: ", base_font, " / ", heading_font, " ", heading_weight, " / ", mono_font,
-        "; primary #", primary, ", ink #", ink, ", link #", link_color)
+        "; primary #", primary, ", ink #", ink, ", link #", link_color, ", code #", code_block_fill)
 
 # Unpack ----------------------------------------------------------------------
 dir <- tempfile("refdocx")
@@ -100,7 +115,11 @@ for (id in c("Subtitle", "SubtitleChar")) {
 
 # Links and code -------------------------------------------------------------
 set_run_props(rpr_of(style("Hyperlink")), color = link_color)
-set_run_props(rpr_of(style("VerbatimChar")), font = mono_font)
+verbatim_rpr <- rpr_of(style("VerbatimChar"))
+set_run_props(verbatim_rpr, font = mono_font)
+if (!is.null(code_inline_fill)) {
+  set_attrs(ensure_child(verbatim_rpr, "w:shd", ORDER_RPR), "w:val" = "clear", "w:color" = "auto", "w:fill" = code_inline_fill)
+}
 
 source_code <- xml2::xml_find_first(styles, "//w:style[@w:styleId='SourceCode']")
 if (inherits(source_code, "xml_missing")) {
@@ -117,7 +136,7 @@ if (inherits(source_code, "xml_missing")) {
 }
 code_ppr <- ppr_of(source_code)
 set_attrs(ensure_child(code_ppr, "w:wordWrap", ORDER_PPR), "w:val" = "0")
-set_attrs(ensure_child(code_ppr, "w:shd", ORDER_PPR), "w:val" = "clear", "w:color" = "auto", "w:fill" = code_fill)
+set_attrs(ensure_child(code_ppr, "w:shd", ORDER_PPR), "w:val" = "clear", "w:color" = "auto", "w:fill" = code_block_fill)
 set_attrs(ensure_child(code_ppr, "w:spacing", ORDER_PPR),
           "w:before" = "120", "w:after" = "120", "w:line" = "240", "w:lineRule" = "auto")
 set_run_props(rpr_of(source_code), font = mono_font, size_halfpt = 20)
@@ -165,6 +184,10 @@ xml2::write_xml(styles, styles_path)
 # alternate name is what Word uses first; family, pitch and the OS/2 ranges
 # (read from the font files) refine the match when the alternate is missing.
 KNOWN_FONTS <- list(
+  "Atkinson Hyperlegible Next" = list(
+    family = "swiss", pitch = "variable", alt = "Arial",
+    usb = c("80000067", "0000000A", "00000000", "00000000"), csb = c("20000013", "00000000")
+  ),
   "Atkinson Hyperlegible" = list(
     family = "swiss", pitch = "variable", alt = "Arial",
     usb = c("800000EF", "0000204B", "00000000", "00000000"), csb = c("20000003", "00000000")
@@ -187,6 +210,10 @@ upsert_font <- function(name, family, pitch, alt, panose = NULL, usb = NULL, csb
     '<w:font xmlns:w="%s" w:name="%s"><w:altName w:val="%s"/>%s<w:charset w:val="00"/><w:family w:val="%s"/><w:pitch w:val="%s"/>%s</w:font>',
     ft_ns, name, alt, panose_xml, family, pitch, sig_xml))
   xml2::xml_add_child(font_table, node)
+}
+# Drop entries of brand fonts no longer in use before writing the current ones.
+for (name in setdiff(names(KNOWN_FONTS), c(base_font, heading_font, mono_font))) {
+  xml2::xml_remove(xml2::xml_find_all(font_table, sprintf("//w:font[@w:name='%s']", name)))
 }
 font_entry <- function(name, mono = FALSE) {
   known <- KNOWN_FONTS[[name]]

@@ -70,7 +70,6 @@
   toc_indent: 1.5em,
   // openwashdata additions, resolved from the brand in typst-show.typ
   primary: black,
-  code-fill: luma(230),
   logo: none,
   logo-width: 40mm,
   footer-text: none,
@@ -108,7 +107,8 @@
   set text(font: font) if font != none
   show math.equation: set text(font: mathfont) if mathfont != none
   show raw: set text(font: codefont) if codefont != none
-  show raw.where(block: true): set block(fill: code-fill)
+  // Code block fill comes from the brand (typography.monospace-block) through
+  // Quarto's own show rule; without a brand Quarto's default grey applies.
 
   set heading(numbering: sectionnumbering)
   show heading: set text(fill: primary)
