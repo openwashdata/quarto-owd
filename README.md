@@ -92,6 +92,16 @@ code.
   the reference document names as alternates. Both brand fonts are free:
   [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible)
   and [Source Code Pro](https://fonts.google.com/specimen/Source+Code+Pro).
+  Word reads the font list when it starts, so restart it after installing.
+
+## Table of contents
+
+Neither format adds one on its own. Set `toc: true` in the document
+header (with `toc-depth` and `toc-title` as usual). The Typst format
+computes it at render time. In Word the table of contents is a field:
+Word asks whether to update fields when the document opens, and answering
+Yes fills it in. Otherwise right-click the heading and choose Update
+Field.
 
 ## Quarto 1.8
 
