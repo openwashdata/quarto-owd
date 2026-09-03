@@ -1,3 +1,13 @@
+# quarto-owd 0.3.0
+
+Typst format only.
+
+- With `toc: true` the table of contents sits on the cover page after the
+  abstract, and the body still starts on page 1. With `cover: false` it
+  stays at the top of the body.
+- Tables: bold header cells, a soft grey line under every body row; the
+  rule under the header row keeps the text colour (#15).
+
 # quarto-owd 0.2.0
 
 - Cover page: the front matter (title, subtitle, authors, date, abstract)

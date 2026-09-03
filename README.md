@@ -106,7 +106,9 @@ code.
 
 Neither format adds one on its own. Set `toc: true` in the document
 header (with `toc-depth` and `toc-title` as usual). The Typst format
-computes it at render time. In Word the table of contents is a field:
+computes it at render time and places it on the cover page, after the
+abstract; with `cover: false` it opens the body. In Word the table of
+contents is a field:
 Word asks whether to update fields when the document opens, and answering
 Yes fills it in. Otherwise right-click the heading and choose Update
 Field.
