@@ -1,0 +1,69 @@
+meta:
+  name: openwashdata
+  link:
+    home: https://openwashdata.org
+    github: https://github.com/openwashdata
+
+color:
+  palette:
+    # Purple family: the navbar and announcement identity.
+    owd-purple: "#5b195b"
+    owd-purple-light: "#c8a3c8"
+    owd-purple-dark: "#2d0e2d"
+    # Very light tint of owd-purple, used as a slide/page background.
+    owd-purple-bg: "#f5eef5"
+    # High-contrast darkening of the peach family, for strokes, chart
+    # accents, and text emphasis where peach itself is too light.
+    owd-orange: "#c14a09"
+    # Core text and surface tokens.
+    ink: "#1e1e1e"
+    paper: "#f4f4f4"
+    # Link blue.
+    owd-blue: "#272bd1"
+    # Highlight and accent set.
+    mint: "#3EB489"
+    peach: "#FEBC94"
+    sand: "#FAE3B4"
+    rose: "#FFC0CB"
+    # Bootstrap-name aliases so brand-aware tools pick these up.
+    purple: owd-purple
+    blue: owd-blue
+    green: mint
+    orange: owd-orange
+    yellow: sand
+    pink: rose
+  foreground: ink
+  background: paper
+  primary: owd-purple
+  success: mint
+  warning: sand
+  info: owd-blue
+
+typography:
+  fonts:
+    - family: Atkinson Hyperlegible
+      source: google
+      weight: [400, 700]
+      style: [normal, italic]
+    - family: Source Code Pro
+      source: google
+      weight: [400, 500]
+  base:
+    family: Atkinson Hyperlegible
+    line-height: 1.5
+  headings:
+    family: Atkinson Hyperlegible
+    weight: 700
+  monospace:
+    family: Source Code Pro
+  link:
+    color: owd-blue
+
+logo:
+  images:
+    icon: logos/OWD-logo-18.png
+    full-png: logos/OWD-logo-01.png
+    full-svg: logos/OWD-logo-01.svg
+  small: icon
+  medium: full-png
+  large: full-svg

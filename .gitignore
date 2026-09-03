@@ -1,0 +1,14 @@
+# Quarto render artefacts
+.quarto/
+/.quarto/
+template.pdf
+template.docx
+template.typ
+template_files/
+*_files/
+
+# OS and editors
+.DS_Store
+.Rproj.user/
+*.Rproj
+.Rhistory

@@ -1,0 +1,24 @@
+---
+title: "openwashdata report"
+subtitle: "Spike document"
+author:
+  - name: Lars Schöbitz
+    affiliations:
+      - name: Global Health Engineering, ETH Zurich
+date: today
+format:
+  owd-typst:
+    keep-typ: true
+---
+
+## Heading two
+
+Body text with a [link](https://openwashdata.org) and `inline code`.
+
+```r
+library(washr)
+```
+
+### Heading three
+
+More text.
