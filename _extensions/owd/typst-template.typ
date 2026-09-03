@@ -75,6 +75,7 @@
   logo-width: 40mm,
   footer-text: none,
   page-fill: white,
+  cover: true,
   doc,
 ) = {
   set document(title: title, keywords: keywords)
@@ -163,25 +164,35 @@
         text(fill: luma(70))[#date]
       }
     ]
-    block(width: 100%, below: 2em)[
-      #if logo-path != none {
-        grid(
-          columns: (1fr, logo-width),
-          column-gutter: 1.5em,
-          align: (left + top, right + top),
-          title-column,
-          image(logo-path, width: logo-width),
-        )
-      } else {
-        title-column
-      }
-      #v(0.8em)
-      #line(length: 100%, stroke: 0.75pt + primary)
-    ]
-    if abstract != none {
-      block(inset: (x: 0em, y: 0.5em), below: 1.5em)[
-        #text(weight: "semibold")[#abstract-title] #h(1em) #abstract
+    let front-matter = [
+      #block(width: 100%, below: 2em)[
+        #if logo-path != none {
+          grid(
+            columns: (1fr, logo-width),
+            column-gutter: 1.5em,
+            align: (left + top, right + top),
+            title-column,
+            image(logo-path, width: logo-width),
+          )
+        } else {
+          title-column
+        }
+        #v(0.8em)
+        #line(length: 100%, stroke: 0.75pt + primary)
       ]
+      #if abstract != none {
+        block(inset: (x: 0em, y: 0.5em), below: 1.5em)[
+          #text(weight: "semibold")[#abstract-title] #h(1em) #abstract
+        ]
+      }
+    ]
+    if cover {
+      // The front matter gets a page of its own without footer; the body
+      // starts on the next page and its page numbers begin at 1.
+      page(footer: none, front-matter)
+      counter(page).update(1)
+    } else {
+      front-matter
     }
   }
 

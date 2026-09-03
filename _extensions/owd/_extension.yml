@@ -1,12 +1,13 @@
 title: openwashdata
 author: openwashdata
-version: 0.1.0
+version: 0.2.0
 quarto-required: ">=1.8.0"
 contributes:
   formats:
     common:
       toc: false
       number-sections: false
+      cover: true
     typst:
       papersize: a4
       margin:
@@ -21,3 +22,4 @@ contributes:
       reference-doc: reference.docx
       filters:
         - docx-tables.lua
+        - docx-cover.lua
