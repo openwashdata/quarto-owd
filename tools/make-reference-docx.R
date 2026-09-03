@@ -4,9 +4,9 @@
 #
 #   Rscript tools/make-reference-docx.R
 #
-# Only word/styles.xml and word/theme/theme1.xml change. Every edit sets an
-# attribute or replaces a child in place, so running twice gives the same
-# file, and a header or footer added in Word is left alone.
+# Only word/styles.xml, word/theme/theme1.xml and word/fontTable.xml change.
+# Every edit sets an attribute or replaces a child in place, so running twice
+# gives the same file, and a header or footer added in Word is left alone.
 source("tools/docx-utils.R")
 
 brand_path <- "_brand/_brand.yml"
@@ -119,6 +119,46 @@ first_row <- xml2::read_xml(sprintf(
 xml2::xml_add_child(table_style, first_row)
 
 xml2::write_xml(styles, styles_path)
+
+# Font table: what Word substitutes when a brand font is not installed -------
+# Without an entry, an unknown font name falls back to Times New Roman. The
+# alternate name is what Word uses first; family, pitch and the OS/2 ranges
+# (read from the font files) refine the match when the alternate is missing.
+KNOWN_FONTS <- list(
+  "Atkinson Hyperlegible" = list(
+    family = "swiss", pitch = "variable", alt = "Arial",
+    usb = c("800000EF", "0000204B", "00000000", "00000000"), csb = c("20000003", "00000000")
+  ),
+  "Source Code Pro" = list(
+    family = "modern", pitch = "fixed", alt = "Courier New", panose = "020B0309030403020204",
+    usb = c("200002F7", "02003803", "00000000", "00000000"), csb = c("6000019F", "00000000")
+  )
+)
+font_table_path <- file.path(dir, "word", "fontTable.xml")
+font_table <- xml2::read_xml(font_table_path)
+ft_ns <- xml2::xml_ns(font_table)[["w"]]
+upsert_font <- function(name, family, pitch, alt, panose = NULL, usb = NULL, csb = NULL) {
+  xml2::xml_remove(xml2::xml_find_all(font_table, sprintf("//w:font[@w:name='%s']", name)))
+  panose_xml <- if (is.null(panose)) "" else sprintf('<w:panose1 w:val="%s"/>', panose)
+  sig_xml <- if (is.null(usb)) "" else sprintf(
+    '<w:sig w:usb0="%s" w:usb1="%s" w:usb2="%s" w:usb3="%s" w:csb0="%s" w:csb1="%s"/>',
+    usb[1], usb[2], usb[3], usb[4], csb[1], csb[2])
+  node <- xml2::read_xml(sprintf(
+    '<w:font xmlns:w="%s" w:name="%s"><w:altName w:val="%s"/>%s<w:charset w:val="00"/><w:family w:val="%s"/><w:pitch w:val="%s"/>%s</w:font>',
+    ft_ns, name, alt, panose_xml, family, pitch, sig_xml))
+  xml2::xml_add_child(font_table, node)
+}
+font_entry <- function(name, mono = FALSE) {
+  known <- KNOWN_FONTS[[name]]
+  if (is.null(known)) {
+    known <- if (mono) list(family = "modern", pitch = "fixed", alt = "Courier New")
+             else list(family = "swiss", pitch = "variable", alt = "Arial")
+  }
+  do.call(upsert_font, c(list(name = name), known))
+}
+for (font in unique(c(base_font, heading_font))) font_entry(font)
+font_entry(mono_font, mono = TRUE)
+xml2::write_xml(font_table, font_table_path)
 
 # Theme fonts, for styles a maintainer adds in Word later --------------------
 theme <- xml2::read_xml(theme_path)

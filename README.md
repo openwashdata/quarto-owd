@@ -88,7 +88,8 @@ code.
   `.quarto/typst/fonts` on the first render. That first render needs a
   network connection.
 - Word: the fonts have to be installed on the machine that opens the
-  document, or Word substitutes another font. Both are free:
+  document. Without them Word falls back to Arial and Courier New, which
+  the reference document names as alternates. Both brand fonts are free:
   [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible)
   and [Source Code Pro](https://fonts.google.com/specimen/Source+Code+Pro).
 
