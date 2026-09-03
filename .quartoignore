@@ -1,0 +1,10 @@
+# Not copied into a new project by `quarto use template openwashdata/quarto-owd`.
+# The extension, the brand mirror and template.qmd are what a new document needs.
+.github/
+tools/
+images/
+README.md
+NEWS.md
+LICENSE
+.gitignore
+.quartoignore
