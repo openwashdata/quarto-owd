@@ -11,7 +11,7 @@ Both take their colours, fonts and logo from the brand definition in
 format reads the brand file at render time. The Word format uses a
 reference document whose styles are generated from the same file.
 
-![First page of the sample document rendered with owd-typst](images/template-page-1.png)
+![First content page of the sample document rendered with owd-typst; a cover page with title, authors and abstract precedes it](images/template-content-page.png)
 
 ## Requirements
 
@@ -55,7 +55,17 @@ format:
 
 Everything Quarto offers for `typst` and `docx` works as usual, for
 example `toc`, `number-sections`, `fontsize`, `papersize` and `margin`.
-The Typst format adds two options:
+
+Both formats put the front matter (title, authors, date, abstract) on a
+cover page and start the body on the next page. In the PDF the cover has
+no footer and page numbering starts at 1 with the first heading. For a
+short memo, keep everything on one page with:
+
+```yaml
+cover: false
+```
+
+The Typst format adds two more options:
 
 ```yaml
 format:

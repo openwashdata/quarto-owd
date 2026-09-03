@@ -1,3 +1,11 @@
+# quarto-owd 0.2.0
+
+- Cover page: the front matter (title, subtitle, authors, date, abstract)
+  sits on a page of its own and the body starts on the next page. In the
+  PDF the cover has no footer and page numbers start at 1 with the first
+  heading; in Word a page break follows the abstract. `cover: false`
+  keeps the one page layout (#13).
+
 # quarto-owd 0.1.0
 
 First release.

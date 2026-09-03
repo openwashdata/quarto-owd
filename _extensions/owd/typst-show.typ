@@ -103,5 +103,10 @@ $endif$
 $if(footer-text)$
   footer-text: "$footer-text$",
 $endif$
+$if(cover)$
+  cover: true,
+$else$
+  cover: false,
+$endif$
   doc,
 )
