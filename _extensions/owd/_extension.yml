@@ -19,3 +19,5 @@ contributes:
         - page.typ
     docx:
       reference-doc: reference.docx
+      filters:
+        - docx-tables.lua

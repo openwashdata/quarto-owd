@@ -23,15 +23,15 @@ if (status != 0 || !file.exists(default_docx)) stop("pandoc did not write the de
 dir <- tempfile("bootstrap")
 zip::unzip(default_docx, exdir = dir)
 
-# A4 and 25 mm margins (twentieths of a point: 25 mm = 1417).
+# A4 and 20 mm margins (twentieths of a point: 20 mm = 1134).
 document <- xml2::read_xml(file.path(dir, "word", "document.xml"))
 sect <- xml2::xml_find_first(document, "//w:sectPr")
 set_attrs(ensure_child(sect, "w:pgSz", c("w:footnotePr", "w:endnotePr", "w:type", "w:pgSz", "w:pgMar")),
           "w:w" = "11906", "w:h" = "16838")
 set_attrs(ensure_child(sect, "w:pgMar", c("w:footnotePr", "w:endnotePr", "w:type", "w:pgSz", "w:pgMar")),
-          "w:top" = "1417", "w:right" = "1417", "w:bottom" = "1417", "w:left" = "1417",
+          "w:top" = "1134", "w:right" = "1134", "w:bottom" = "1134", "w:left" = "1134",
           "w:header" = "709", "w:footer" = "709", "w:gutter" = "0")
 xml2::write_xml(document, file.path(dir, "word", "document.xml"))
 
 zip_docx(dir, out)
-message("Wrote ", out, " (A4, 25 mm margins). Now run: Rscript tools/make-reference-docx.R")
+message("Wrote ", out, " (A4, 20 mm margins). Now run: Rscript tools/make-reference-docx.R")
