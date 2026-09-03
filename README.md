@@ -89,8 +89,8 @@ this repository has regenerated the file.
 
 ## Fonts
 
-The brand uses Atkinson Hyperlegible for text and Source Code Pro for
-code.
+The brand uses Atkinson Hyperlegible Next for text and Source Code Pro
+for code.
 
 - Typst: Quarto downloads both from Google Fonts into
   `.quarto/typst/fonts` on the first render. That first render needs a
@@ -98,7 +98,7 @@ code.
 - Word: the fonts have to be installed on the machine that opens the
   document. Without them Word falls back to Arial and Courier New, which
   the reference document names as alternates. Both brand fonts are free:
-  [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible)
+  [Atkinson Hyperlegible Next](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next)
   and [Source Code Pro](https://fonts.google.com/specimen/Source+Code+Pro).
   Word reads the font list when it starts, so restart it after installing.
 

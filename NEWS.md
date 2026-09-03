@@ -1,3 +1,19 @@
+# quarto-owd 0.4.0
+
+Follows openwashdata/brand 1.0.0.
+
+- Brand mirror refreshed: Atkinson Hyperlegible Next for text, the
+  darkened owd-orange, the new accents and roles, white logo variants and
+  alt text.
+- Code blocks in the PDF take their fill from the brand
+  (`typography.monospace-block.background-color`, the light purple tint)
+  through Quarto's own rule; the template no longer sets one. Links are
+  underlined, as the brand says.
+- Word: the reference document reads the code tint from the brand for
+  both code blocks and inline code, names Atkinson Hyperlegible Next with
+  Arial as its substitute, and drops font table entries of fonts the
+  brand no longer uses.
+
 # quarto-owd 0.3.0
 
 Typst format only.
