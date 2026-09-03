@@ -17,3 +17,5 @@ contributes:
         - typst-template.typ
         - typst-show.typ
         - page.typ
+    docx:
+      reference-doc: reference.docx
