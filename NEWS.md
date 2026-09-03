@@ -13,6 +13,6 @@ First release.
   (style `OwdTable`, assigned by a filter), brand fonts with Arial and
   Courier New as substitutes when they are not installed.
 - `_brand/` mirrors openwashdata/brand; `template.qmd` is the starter
-  document and the CI smoke test.
+  document.
 - Works on Quarto 1.8 with an explicit `brand:` key and on Quarto 1.9
   without one.

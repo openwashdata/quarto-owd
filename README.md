@@ -1,7 +1,5 @@
 # quarto-owd
 
-[![render](https://github.com/openwashdata/quarto-owd/actions/workflows/render.yaml/badge.svg)](https://github.com/openwashdata/quarto-owd/actions/workflows/render.yaml)
-
 A Quarto extension that renders documents in the openwashdata brand. It
 provides two formats:
 
@@ -130,11 +128,11 @@ a subfolder needs `brand: ../_brand.yml` in its header.
 
 ## How the brand flows
 
-Values change in openwashdata/brand first. A weekly workflow in this
-repository copies the brand into `_brand/`, regenerates `reference.docx`
-and opens a pull request when anything changed. After the next release,
-`quarto update` brings the Word styles to your project, and
-`quarto use brand` brings the brand file itself.
+Values change in openwashdata/brand first. A maintainer then refreshes
+the mirror in `_brand/`, regenerates `reference.docx` (see
+[Maintaining](#maintaining)) and releases. After that, `quarto update`
+brings the Word styles to your project, and `quarto use brand` brings the
+brand file itself.
 
 ## Maintaining
 
@@ -147,10 +145,11 @@ quarto use brand openwashdata/brand --force
 Rscript tools/make-reference-docx.R
 ```
 
-The script rewrites `word/styles.xml` and `word/theme/theme1.xml` and
-nothing else, so a header or footer added in Word survives. Running it
-twice gives identical bytes; CI checks that the committed file matches
-the current brand.
+The script rewrites the styles, theme fonts, font table and page margins
+and nothing else, so a header or footer added in Word survives. Running
+it twice gives identical bytes. Render `template.qmd` to both formats
+once before committing, and commit the regenerated `reference.docx`
+together with the refreshed `_brand/`.
 
 `tools/bootstrap-reference-docx.R --force` starts over from pandoc's
 default document on A4. It discards any edits made in Word.
