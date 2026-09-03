@@ -1,24 +1,86 @@
 ---
-title: "openwashdata report"
-subtitle: "Spike document"
+title: "Household water costs in Accra"
+subtitle: "A sample report rendered with the openwashdata Quarto extension"
 author:
   - name: Lars Schöbitz
     affiliations:
       - name: Global Health Engineering, ETH Zurich
+    email: lschoebitz@ethz.ch
 date: today
+abstract: |
+  This document exercises the owd-typst and owd-docx formats: headings to
+  level three, a link, inline and block code, a table, a figure with a
+  caption, a footnote, a callout and lists. Replace its content with your
+  own; the front matter is the part to keep.
 format:
-  owd-typst:
-    keep-typ: true
+  owd-typst: default
+  owd-docx: default
 ---
 
-## Heading two
+## Background
 
-Body text with a [link](https://openwashdata.org) and `inline code`.
+openwashdata publishes water, sanitation and hygiene data as R data
+packages. Each package carries a data dictionary, a website and a
+citation, all set up with the [washr](https://openwashdata.github.io/washr/)
+package. This report shows what a document about one of those datasets
+looks like when it renders with the openwashdata brand.^[The brand
+definition lives in openwashdata/brand; this document reads it at
+render time.]
+
+The `washr` package exposes ten functions. The first three set up the
+package structure:
 
 ```r
 library(washr)
+setup_rawdata()
+setup_dictionary()
+setup_roxygen()
 ```
 
-### Heading three
+### Data sources
 
-More text.
+Household survey data were collected in three neighbourhoods of Accra
+between March and May 2023. @tbl-summary summarises the sample.
+
+| Neighbourhood | Households | Median monthly cost (GHS) |
+|:--------------|-----------:|--------------------------:|
+| Madina        |        212 |                      48.5 |
+| Nima          |        187 |                      61.0 |
+| Teshie        |        164 |                      39.2 |
+
+: Sample size and median monthly water cost by neighbourhood {#tbl-summary}
+
+### Methods
+
+Costs were converted to Ghana cedi at the exchange rate of the survey
+month. Missing values were not imputed.
+
+::: {.callout-note}
+The data package documents every variable in `data-raw/dictionary.csv`.
+Run `?watercostaccra` after installing the package to read it.
+:::
+
+## Results
+
+Two out of three households pay a vendor for at least part of their
+water. The share is highest in Nima, where piped supply is intermittent.
+
+- Vendor water costs about three times the utility tariff per litre.
+- Households with a storage tank pay less per month on average.
+- Reported costs vary more within neighbourhoods than between them.
+
+![The openwashdata mark, standing in for a figure. Replace with a plot.](_brand/logos/OWD-logo-01.png){#fig-logo width="45%"}
+
+@fig-logo shows where a plot would go.
+
+## Recommendations
+
+1. Publish the cleaned survey as an R data package with `washr`.
+2. Cite the package DOI in every derived report.
+3. Refresh the brand with `quarto use brand openwashdata/brand` when it changes.
+
+## Session information
+
+Rendered with Quarto and the `owd-typst` format of the openwashdata
+extension. Fonts: Atkinson Hyperlegible for text and Source Code Pro
+for code, both downloaded by Quarto from Google Fonts at render time.
